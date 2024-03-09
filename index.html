@@ -7,7 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-</body>
+    <div id="game-container">
+        <h1>War Card Game</h1>
+        <div id="scoreboard">
+            <div id="player1">
+                <h2>Player 1</h2>
+                <p>Score: <span id="player1-score">0</span></p>
+                <p>Last Card: <span id="player1-card">None</span></p>
+            </div>
+            <div id="player2">
+                <h2>Player 2</h2>
+                <p>Score: <span id="player2-score">0</span></p>
+                <p>Last Card: <span id="player2-card">None</span></p>
+            </div>
+        </div>
+        <button id="play-round">Play Round</button>
+        <div id="winner">Winner: <span id="game-winner">None</span></div>
+    </div>
     <script src="script.js"></script>
+</body>
 </html>

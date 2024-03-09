@@ -1,3 +1,46 @@
 body {
-    background-color: rgb(63, 63, 63);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #121212; 
+    color: #fff;
+}
+
+#game-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #f0f0f0;
+}
+
+#scoreboard {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+#scoreboard div {
+    width: 150px;
+}
+
+#play-round {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#play-round:hover {
+    background-color: #45a049;
+}
+
+#winner {
+    margin-top: 20px;
 }

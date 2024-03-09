@@ -1,5 +1,4 @@
-// Step 1: Define the Card class
-// Defines a single playing card
+// Card class definition
 class Card {
     constructor(rank, suit) {
         this.rank = rank; // Rank of the card (2-10, Jack, Queen, King, Ace)
@@ -7,19 +6,17 @@ class Card {
     }
 }
 
-// Step 2: Define the Deck class
-// Represents a deck of playing cards
+// Deck class definition
 class Deck {
     constructor() {
         this.cards = []; // Array to store the cards
-        this.initializeDeck(); // Initializes the deck with 52 cards
+        this.initializeDeck(); // Initializes the deck with 52 cards when a new deck is created
     }
 
-    // Fills the deck with 52 unique cards
+    // Method to fill the deck with 52 unique cards
     initializeDeck() {
         const suits = ['clubs', 'diamonds', 'hearts', 'spades'];
         const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
-
         for (const suit of suits) {
             for (const rank of ranks) {
                 this.cards.push(new Card(rank, suit));
@@ -27,39 +24,43 @@ class Deck {
         }
     }
 
-    // Shuffles the deck of cards
+    // Method to shuffle the deck of cards
     shuffle() {
         for (let i = this.cards.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
-            [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]; // Swap elements
+            const j = Math.floor(Math.random() * (i + 1));
+            // Swap elements
+            [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
         }
     }
 
-    // Deals a single card from the deck
+    // Method to deal a single card from the deck
     deal() {
-        return this.cards.pop(); // Removes and returns the last card in the array
+        // Removes and returns the last card in the array
+        return this.cards.pop(); 
     }
 }
 
-// Step 3: Define the Player class
-// Represents a player in the game
+// Player class definition
 class Player {
     constructor() {
-        this.hand = []; // Array to store the player's cards
-        this.score = 0; // Tracks the player's score
+        // Array to store the player's cards
+        this.hand = []; 
+        // Tracks the player's score
+        this.score = 0;
     }
 
-    // Receives a card and adds it to the player's hand
+    // Method to receive a card and add it to the player's hand
     receiveCard(card) {
         this.hand.push(card);
     }
 
-    // Plays the top card from the player's hand
+    // Method to play the top card from the player's hand
     playCard() {
-        return this.hand.shift(); // Removes and returns the first card in the array
+        // Removes and returns the first card in the array
+        return this.hand.shift(); 
     }
 
-    // Increases the player's score
+    // Method to increase the player's score
     addPoint() {
         this.score++;
     }
@@ -74,6 +75,23 @@ function getCardValue(rank) {
     return rankValues[rank];
 }
 
+// Function to update the scores on the webpage
+function updateScores(playerOne, playerTwo) {
+    document.getElementById('player1-score').textContent = playerOne.score;
+    document.getElementById('player2-score').textContent = playerTwo.score;
+}
+
+// Function to determine the winner and display it on the webpage
+function determineWinner(playerOne, playerTwo) {
+    let winnerText = 'The game is a tie!';
+    if (playerOne.score > playerTwo.score) {
+        winnerText = `Player 1 wins the game with a score of ${playerOne.score}`;
+    } else if (playerTwo.score > playerOne.score) {
+        winnerText = `Player 2 wins the game with a score of ${playerTwo.score}`;
+    }
+    document.getElementById('game-winner').textContent = winnerText;
+}
+
 // Function to play one round of the game
 function playRound(playerOne, playerTwo) {
     const cardOne = playerOne.playCard();
@@ -82,48 +100,41 @@ function playRound(playerOne, playerTwo) {
     const cardOneValue = getCardValue(cardOne.rank);
     const cardTwoValue = getCardValue(cardTwo.rank);
 
-    console.log(`Player 1 plays ${cardOne.rank} of ${cardOne.suit}`);
-    console.log(`Player 2 plays ${cardTwo.rank} of ${cardTwo.suit}`);
+    // Update the webpage with the cards played
+    document.getElementById('player1-card').textContent = `${cardOne.rank} of ${cardOne.suit}`;
+    document.getElementById('player2-card').textContent = `${cardTwo.rank} of ${cardTwo.suit}`;
 
+    // Determine the winner of the round and update scores
     if (cardOneValue > cardTwoValue) {
         playerOne.addPoint();
-        console.log("Player 1 wins the round");
     } else if (cardOneValue < cardTwoValue) {
         playerTwo.addPoint();
-        console.log("Player 2 wins the round");
-    } else {
-        console.log("This round is a tie.");
     }
+
+    // Update the scores on the webpage
+    updateScores(playerOne, playerTwo);
 }
 
-// Main function to play the War card game
-function playWarGame() {
-    // Create a new deck, shuffle it, and create two players
-    const deck = new Deck();
-    deck.shuffle();
-    const playerOne = new Player();
-    const playerTwo = new Player();
+// Set up the game with a shuffled deck and dealt cards to players
+const deck = new Deck();
+deck.shuffle();
+const playerOne = new Player();
+const playerTwo = new Player();
 
-    // Deal 26 cards to each player
-    while (deck.cards.length > 0) {
-        playerOne.receiveCard(deck.deal());
-        playerTwo.receiveCard(deck.deal());
-    }
+// Deal 26 cards to each player
+while (deck.cards.length > 0) {
+    playerOne.receiveCard(deck.deal());
+    playerTwo.receiveCard(deck.deal());
+}
 
-    // Play 26 rounds of the game
-    for (let i = 0; i < 26; i++) {
+// Add an event listener to the "Play Round" button
+document.getElementById('play-round').addEventListener('click', function() {
+    if (playerOne.hand.length > 0 && playerTwo.hand.length > 0) {
         playRound(playerOne, playerTwo);
-    }
-
-    // Declare the winner or a tie based on the players' scores
-    if (playerOne.score > playerTwo.score) {
-        console.log(`Player 1 wins the game with a score of ${playerOne.score}`);
-    } else if (playerOne.score < playerTwo.score) {
-        console.log(`Player 2 wins the game with a score of ${playerTwo.score}`);
     } else {
-        console.log("The game is a tie!");
+        // Once all cards are played, determine the winner and update the HTML
+        determineWinner(playerOne, playerTwo);
+        // Disable the play button after the game is over
+        this.disabled = true;
     }
-}
-
-// Start the game
-playWarGame();
+});
